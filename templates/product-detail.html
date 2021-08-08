@@ -27,7 +27,7 @@
                     <b>Объем двигателя, см3:</b> {{ product.volume }}<br>
                     <b>Мощность, л. с.:</b> {{ product.power }}<br>
                     <b>Коробка:</b> {{ product.get_transmission_display }}<br>
-                    <b>Руль:</b> {{ product.steering_wheel }}<br>
+                    <b>Руль:</b> {{ product.get_steering_wheel_display }}<br>
                     <b>Цвет:</b> {{ product.color }}<br>
                     <i>{{ product.description }}</i>
                 </p>
@@ -49,10 +49,10 @@
 <!-- Related items section-->
 <section class="py-5 bg-light">
     <div class="container px-4 px-lg-5 mt-5">
-        <h2 class="fw-bolder mb-4">Машины со скидкой</h2>
-        {% if products_discount %}
+        <h2 class="fw-bolder mb-4">Новые машины</h2>
+        {% if products_new %}
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-            {% for product in products_discount %}
+            {% for product in products_new %}
             <div class="col mb-5">
                 <div class="card h-100">
                     <!-- Product image-->
@@ -65,12 +65,7 @@
                             <p>{{ product.power }} л.с, {{ product.volume }} АТ, {{ product.year_of_issue }} г.
                             {{ product.mileage }} км, {{ product.get_transmission_display }}</p>
                             <!-- Product price-->
-                            {% if product.discount %}
-                            <h6 class="text-decoration-line-through" style="color: red;">{{ product.price }}</h6>
-                            <h6>{{ product.price|mul:product.discount|div:-100|add:product.price }} сом</h6>
-                            {% else %}
                             <h6>{{ product.price }} сом</h6>
-                            {% endif %}
                         </div>
                     </div>
                     <!-- Product actions-->
@@ -82,7 +77,69 @@
             {% endfor %}
         </div>
         {% else %}
-        <p>Упс... Пока нет скидок</p>
+        <p>Упс... Пока нет новых машин</p>
+        {% endif %}
+
+        <h2 class="fw-bolder mb-4">Леворульные машины</h2>
+        {% if products_left_steering_wheel %}
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+            {% for product in products_left_steering_wheel %}
+            <div class="col mb-5">
+                <div class="card h-100">
+                    <!-- Product image-->
+                    <img class="card-img-top" src="{{ product.image.url }}" alt="{{ product }}"/>
+                    <!-- Product details-->
+                    <div class="card-body p-4">
+                        <div class="text-center">
+                            <!-- Product name-->
+                            <h6 class="fw-bolder">{{ product|truncatewords:5 }}</h6>
+                            <p>{{ product.power }} л.с, {{ product.volume }} АТ, {{ product.year_of_issue }} г.
+                            {{ product.mileage }} км, {{ product.get_transmission_display }}</p>
+                            <!-- Product price-->
+                            <h6>{{ product.price }} сом</h6>
+                        </div>
+                    </div>
+                    <!-- Product actions-->
+                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{% url 'product-detail' product.id %}">Посмотреть</a></div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>Упс... Пока нет леворульных машин</p>
+        {% endif %}
+
+        <h2 class="fw-bolder mb-4">Машины коробка-автомат</h2>
+        {% if products_transmission_automatic %}
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+            {% for product in products_transmission_automatic %}
+            <div class="col mb-5">
+                <div class="card h-100">
+                    <!-- Product image-->
+                    <img class="card-img-top" src="{{ product.image.url }}" alt="{{ product }}"/>
+                    <!-- Product details-->
+                    <div class="card-body p-4">
+                        <div class="text-center">
+                            <!-- Product name-->
+                            <h6 class="fw-bolder">{{ product|truncatewords:5 }}</h6>
+                            <p>{{ product.power }} л.с, {{ product.volume }} АТ, {{ product.year_of_issue }} г.
+                            {{ product.mileage }} км, {{ product.get_transmission_display }}</p>
+                            <!-- Product price-->
+                            <h6>{{ product.price }} сом</h6>
+                        </div>
+                    </div>
+                    <!-- Product actions-->
+                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{% url 'product-detail' product.id %}">Посмотреть</a></div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>Упс... Пока нет леворульных машин</p>
         {% endif %}
     </div>
 </section>

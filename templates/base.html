@@ -22,9 +22,6 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'home' %}">Домой</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#!">О нас</a></li>
-
-                        <!-- Категории -->
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Категории</a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -36,16 +33,24 @@
                                         {% endfor %}
                                     {% endif %}
                                 {% endfor %}
+                                {% if request.user.is_authenticated and request.user.is_superuser %}
+                                <li><hr class="dropdown-divider" /></li>
+                                <li><a class="dropdown-item" href="{% url 'add-product' %}">Добавить</a></li>
+                                {% endif %}
+                            </ul>
+                        </li>
+
+                        <!-- Категории -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Фильтр</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="{% url 'filter-product' %}?filter=new">Недавние</a></li>
                                 <li><hr class="dropdown-divider" /></li>
                                 <li><a class="dropdown-item" href="{% url 'filter-product' %}?filter=cheap">Дешевые</a></li>
                                 <li><hr class="dropdown-divider" /></li>
                                 <li><a class="dropdown-item" href="{% url 'filter-product' %}?filter=expensive">Дорогие</a></li>
                                 <li><hr class="dropdown-divider" /></li>
-                                <li><a class="dropdown-item" href="{% url 'filter-product' %}?filter=new">Новые</a></li>
-                                {% if request.user.is_authenticated and request.user.is_superuser %}
-                                <li><hr class="dropdown-divider" /></li>
-                                <li><a class="dropdown-item" href="{% url 'add-product' %}">Добавить</a></li>
-                                {% endif %}
+                                <li><a class="dropdown-item" href="{% url 'filter-product' %}?filter=new_year_of_issue">Новые</a></li>
                             </ul>
                         </li>
                         <!-- /Категории -->
@@ -132,8 +137,7 @@
         {% block content %}{% endblock %}
         <!-- Footer-->
         <footer class="py-5 bg-dark">
-            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2021</p></div>
-            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2021</p></div>
+            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Mersedes-Benz company 2021</p></div>
         </footer>
         <!-- Bootstrap core JS-->
         <!-- JavaScript Bundle with Popper -->

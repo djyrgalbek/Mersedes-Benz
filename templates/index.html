@@ -60,13 +60,13 @@
   <ul class="pagination justify-content-center">
       {% if page_obj.has_previous %}
     <li class="page-item">
-      <a class="page-link" href="{% url 'home' %}?page={{ page_obj.previous_page_number }}">Previous</a>
+      <a class="page-link" href="{% url 'home' %}?page={{ page_obj.previous_page_number }}">Предыдущий</a>
     </li>
       {% endif %}
     <li class="page-item"><a class="page-link" href="#">{{ page_obj.number }}</a></li>
       {% if page_obj.has_next %}
     <li class="page-item">
-      <a class="page-link" href="{% url 'home' %}?page={{ page_obj.next_page_number }}">Next</a>
+      <a class="page-link" href="{% url 'home' %}?page={{ page_obj.next_page_number }}">Следующий</a>
     </li>
       {% endif %}
   </ul>

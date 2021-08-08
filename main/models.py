@@ -53,7 +53,7 @@ class Product(models.Model):
     description = models.TextField(blank=True)
     image = models.ImageField(upload_to='products')
     price = models.DecimalField(max_digits=20, decimal_places=2, verbose_name='Цена')
-    discount = models.PositiveIntegerField(verbose_name='Скидка, %', default=0)
+    # discount = models.PositiveIntegerField(verbose_name='Скидка, %', default=0)
     year_of_issue = models.PositiveIntegerField(verbose_name='Год выпуска')
     mileage = models.PositiveIntegerField(verbose_name='Пробег, км', default=0)
     engine = models.CharField(choices=ENGINE_CHOICES,

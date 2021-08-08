@@ -22,7 +22,7 @@ class MainPageView(ListView):
     model = Product
     template_name = 'index.html'
     context_object_name = 'products'
-    paginate_by = 3
+    paginate_by = 6
 
 
 # Представление для search.html
@@ -59,13 +59,16 @@ class FilterPageView(ListView):
         if filter == "new":
             start_date = timezone.now() - timedelta(days=1)
             context['products'] = Product.objects.filter(created__gte=start_date)
-            context['category'] = 'Новые'
+            context['category'] = 'Недавно добавленные'
         elif filter == "cheap":
-            context['products'] = Product.objects.filter(price__lte=350000)
+            context['products'] = Product.objects.filter(price__lte=500000)
             context['category'] = 'Дешевые'
         elif filter == "expensive":
-            context['products'] = Product.objects.filter(price__gte=350001)
+            context['products'] = Product.objects.filter(price__gte=500001)
             context['category'] = 'Дорогие'
+        elif filter == "new_year_of_issue":
+            context['products'] = Product.objects.filter(year_of_issue__gte=2021)
+            context['category'] = 'Новые'
         else:
             context['products'] = Product.objects.all()
         return context
@@ -97,7 +100,10 @@ class ProductDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['products_discount'] = Product.objects.filter().exclude(discount=0)
+        context['products_new'] = Product.objects.filter(year_of_issue__gte=2021)
+        context['products_left_steering_wheel'] = Product.objects.filter(steering_wheel__icontains='left')
+        context['products_transmission_automatic'] = Product.objects.filter(transmission='automatic')
+
         return context
 
 

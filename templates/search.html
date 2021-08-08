@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+<div role="main" style="padding: 60px 0 30px;">
+	<section class="jumbotron text-center">
+		<div class="container">
+			<h1 class="jumbotron-heading">Результат(ы) поиска</h1>
+			<p class="lead text-muted">
+				Найдено <b>{{ products|length }}</b> искомое(ых) из запроса "{{ search }}".<br>
+			</p>
+			<p>
+				<a href="{% url 'home' %}" class="btn btn-secondary my-2">Вернуться "Домой"</a>
+			</p>
+		</div>
+	</section>
+
+	<div class="album" style="outline: none;">
+		<div class="container">
+			<div class="row">
+				{% for product in products %}
+				<div class="col-md-4" style="margin: 0 auto;">
+					<div class="card mb-4 box-shadow">
+						<img class="card-img-top" src="{{ product.image.url }}" alt="{{ product }}">
+						<div class="card-body">
+							<p class="card-text">
+							<h5 style="text-align: center; margin: 0 0 15px;">{{ product }}</h5>
+							Год выпуска: {{ product.year_of_issue }},
+							Пробег, км: {{ product.mileage }},
+							Двигатель: {{ product.get_engine_display }},
+							Объем двигателя, см3: {{ product.volume }},
+							Мощность, л. с.: {{ product.power }} ...
+							<hr>
+							<h5 style="text-align: center; padding: 0 0 14px;">{{ product.price }} сом</h5>
+							</p>
+							<div class="d-flex justify-content-between align-items-center">
+								<div class="btn-group">
+									<a href="{% url 'update-product' product.id %}"
+									   class="btn btn-sm btn-outline-secondary">Обновить</a>
+									<a href="{% url 'product-detail' product.id %}"
+									   class="btn btn-sm btn-outline-secondary">Перейти</a>
+								</div>
+								<small class="text-muted">{{ product.created }}</small>
+							</div>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

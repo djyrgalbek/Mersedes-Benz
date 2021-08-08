@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load mathfilters %}
+{% block content %}
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          {{ message }}
+          <span style="float: right;">X
+          </span>
+        </div>
+    {% endfor %}
+{% endif %}
+
+<!-- Section-->
+<section class="py-5" id="features">
+    <h1 style="text-align: center; margin-bottom: 50px;">Главная страница</h1>
+	<div class="album" style="outline: none;">
+		<div class="container">
+			<div class="row">
+                {% if products %}
+                {% for product in page_obj %}
+                <div class="col-md-4" style="margin: 0 auto;">
+                        <div class="card mb-4 box-shadow">
+                            <img class="card-img-top" src="{{ product.image.url }}" alt="{{ product.title }}">
+                            <div class="card-body">
+                                <p class="card-text">
+                                <h5 style="text-align: center; margin: 0 0 15px;">{{ product }}</h5>
+                                Год выпуска: {{ product.year_of_issue }},
+                                Пробег, км: {{ product.mileage }},
+                                Двигатель: {{ product.get_engine_display }},
+                                Объем двигателя, см3: {{ product.volume }},
+                                Мощность, л. с.: {{ product.power }} ...
+                                <hr>
+                                <h5 style="text-align: center; padding: 0 0 14px;">{{ product.price }} сом</h5>
+                                </p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <a href="{% url 'cart_add' product.id %}"
+                                           class="btn btn-sm btn-outline-secondary">В корзину</a>
+                                        <a href="{% url 'product-detail' product.id %}"
+                                           class="btn btn-sm btn-outline-secondary">Перейти</a>
+                                    </div>
+                                    <small class="text-muted">{{ product.created }}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                {% else %}
+                <h3>Упс... кажется нет публикаций((</h3>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+      {% if page_obj.has_previous %}
+    <li class="page-item">
+      <a class="page-link" href="{% url 'home' %}?page={{ page_obj.previous_page_number }}">Previous</a>
+    </li>
+      {% endif %}
+    <li class="page-item"><a class="page-link" href="#">{{ page_obj.number }}</a></li>
+      {% if page_obj.has_next %}
+    <li class="page-item">
+      <a class="page-link" href="{% url 'home' %}?page={{ page_obj.next_page_number }}">Next</a>
+    </li>
+      {% endif %}
+  </ul>
+</nav>
+
+{% endblock %}
+

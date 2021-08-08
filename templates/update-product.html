@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<!-- Раздел обновления продукта -->
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-5">
+        <div style="max-width: 500px; margin: 0 auto;">
+            <h1 class="jumbotron-heading">Обновить данные продукта</h1>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ product_form|crispy }}
+                {{ formset.management_form }}
+                {% for form in formset %}
+                    {{ form }}
+                {% endfor %}
+                <button type="submit" class="btn btn-secondary btn-lg btn-block" style="width: 100%; position: relative; top: 25px; margin-bottom: 50px;">Обновить</button>
+            </form>
+        </div>
+    </div>
+</section>
+<!-- /Раздел обновления продукта -->
+{% endblock %}
+

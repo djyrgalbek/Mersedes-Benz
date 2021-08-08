@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-5">
+        <div style="max-width: 500px; margin: 0 auto;">
+            <h1 class="jumbotron-heading">Войти в аккаунт</h1>
+          <p class="lead text-muted">Введите ваши данные</p>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button type="submit" class="btn btn-secondary btn-lg btn-block" style="width: 100%; position: relative; top: 25px; margin-bottom: 50px;">Войти</button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load mathfilters %}
+{% block content %}
+
+<!-- Раздел описания продукта -->
+<section class="py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="row gx-4 gx-lg-5 align-items-center">
+            <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="{{ product.image.url }}" alt="{{ product.title }}"/></div>
+            <div class="col-md-6">
+                <div class="small mb-1">Дата публикации: {{ product.created }}</div>
+                <h1 class="display-5 fw-bolder">{{ product }}</h1>
+                <div class="fs-5 mb-5">
+                    {% if product.discount %}
+                    <span class="text-decoration-line-through" style="color: red;">{{ product.price }}</span>
+                    <span>{{ product.price|mul:product.discount|div:-100|add:product.price }} сом</span>
+                    {% else %}
+                    <span>{{ product.price }} сом</span>
+                    {% endif %}
+                </div>
+                <p class="lead">
+                    <b>Год выпуска:</b> {{ product.year_of_issue }}<br>
+                    <b>Пробег, км:</b> {{ product.mileage }}<br>
+                    <b>Двигатель:</b> {{ product.get_engine_display }}<br>
+                    <b>Количество мест:</b> {{ product.number_of_seats }}<br>
+                    <b>Объем двигателя, см3:</b> {{ product.volume }}<br>
+                    <b>Мощность, л. с.:</b> {{ product.power }}<br>
+                    <b>Коробка:</b> {{ product.get_transmission_display }}<br>
+                    <b>Руль:</b> {{ product.steering_wheel }}<br>
+                    <b>Цвет:</b> {{ product.color }}<br>
+                    <i>{{ product.description }}</i>
+                </p>
+                <div class="d-flex">
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                      <a href="{% url 'cart_add' product.id %}" class="btn btn-secondary">В корзину</a>
+                         {% if request.user.is_authenticated and request.user.is_superuser %}
+                      <a class="btn btn-secondary btn-success" href="{% url 'update-product' product.id %}">Обновить</a>
+                      <a class="btn btn-secondary btn-danger" href="{% url 'delete-product' product.id %}">Удалить</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- /Раздел описания продукта -->
+
+<!-- Related items section-->
+<section class="py-5 bg-light">
+    <div class="container px-4 px-lg-5 mt-5">
+        <h2 class="fw-bolder mb-4">Машины со скидкой</h2>
+        {% if products_discount %}
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+            {% for product in products_discount %}
+            <div class="col mb-5">
+                <div class="card h-100">
+                    <!-- Product image-->
+                    <img class="card-img-top" src="{{ product.image.url }}" alt="{{ product }}"/>
+                    <!-- Product details-->
+                    <div class="card-body p-4">
+                        <div class="text-center">
+                            <!-- Product name-->
+                            <h6 class="fw-bolder">{{ product|truncatewords:5 }}</h6>
+                            <p>{{ product.power }} л.с, {{ product.volume }} АТ, {{ product.year_of_issue }} г.
+                            {{ product.mileage }} км, {{ product.get_transmission_display }}</p>
+                            <!-- Product price-->
+                            {% if product.discount %}
+                            <h6 class="text-decoration-line-through" style="color: red;">{{ product.price }}</h6>
+                            <h6>{{ product.price|mul:product.discount|div:-100|add:product.price }} сом</h6>
+                            {% else %}
+                            <h6>{{ product.price }} сом</h6>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <!-- Product actions-->
+                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{% url 'product-detail' product.id %}">Посмотреть</a></div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>Упс... Пока нет скидок</p>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+

@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load cart_tag %}
+{% load mathfilters %}
+
+{% block content %}
+<!--  {% for key, product in request.session.cart.items %}-->
+<!--    <div class="card" style="width: 18rem;">-->
+<!--      <img src="{{ product.image }}" class="card-img-top" alt="...">-->
+<!--      <div class="card-body">-->
+<!--      <h5 class="card-title">{{ product.name }}</h5>-->
+<!--      </div>-->
+<!--      <ul class="list-group list-group-flush">-->
+<!--      <li class="list-group-item">{{ product.price }}</li>-->
+<!--      <li class="list-group-item">{{ product.quantity }}</li>-->
+<!--      <li class="list-group-item">Total: {{ product.price|multiply:product.quantity }}</li>-->
+<!--      </ul>-->
+<!--      <div class="card-body">-->
+<!--      <a href="{% url 'item_increment' key %}" class="card-link"><span>&#43;</span></a>-->
+<!--        {% if product.quantity != 1 %}-->
+<!--      <a href="{% url 'item_decrement' key %}" class="card-link"><span>&#8722;</span></a>-->
+<!--      {% endif %}-->
+<!--      </div>-->
+<!--      <a class="btn btn-danger" href="{% url 'item_clear' key %}" role="button">Remove</a>-->
+<!--    </div>-->
+<!--  {% endfor %}-->
+<!--<a class="btn btn-warning" href="{% url 'cart_clear' %}" role="button">Clear</a>-->
+
+
+<section class="py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="row gx-4 gx-lg-5 align-items-center">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">Фото</th>
+                <th scope="col">Название</th>
+                <th scope="col">Цена, сом</th>
+                <th scope="col">Количество</th>
+                <th scope="col">Общая сумма, сом</th>
+                <th scope="col">Удалить</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for key, product in request.session.cart.items %}
+              <tr>
+                <td><img src="{{ product.image }}" style="width: 100px;" alt="{{ product.name }}"></td>
+                <td>{{ product.name }}</td>
+                <td>{%if product.discount %}
+                  <s>{{ product.price }}</s>
+                  {{ product.price|mul:product.discount|div:-100|add:product.price }}
+                  {% else %}
+                  {{ product.price }}
+                  {% endif %}</td>
+                <td>
+                  <a href="{% url 'item_increment' product.product_id %}" class="btn btn-primary btn-sm">&#43;</a>
+                  {{ product.quantity }}
+                  {% if product.quantity != 1 %}
+                  <a href="{% url 'item_decrement' product.product_id %}" class="btn btn-primary btn-sm">&#8722;</a>
+                  {% endif %}
+                </td>
+                <td>
+                  {%if product.discount %}
+                  {{ product.price|mul:product.discount|div:-100|add:product.price|mul:product.quantity }}
+                  {% else %}
+                  {{ product.price|mul:product.quantity }}
+                  {% endif %}
+                </td>
+                <td><a href="{% url 'item_clear' product.product_id %}" class="btn btn-danger btn-sm">Удалить</a></td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+          {% if request.session.cart %}
+          <a href="{% url 'cart_clear' %}" class="btn btn-dark">Очистить</a>
+          {% endif %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}

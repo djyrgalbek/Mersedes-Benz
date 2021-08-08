@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+<section class="py-5" id="features">
+	<h1 style="text-align: center; margin-bottom: 50px;">Категория: {{ category.name }}</h1>
+	{% if category.get_children %}
+	<div class="container px-5 my-5">
+		<div class="row gx-5">
+			{% for child in category.get_children %}
+			<div class="col-lg-4 mb-5 mb-lg-0">
+				<div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-collection"></i>
+				</div>
+				<h2 class="h4 fw-bolder">{{ child.name }}</h2>
+				<p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence
+					and probably just keep going until we run out of words.</p>
+				<a class="text-decoration-none" href="{% url 'category' child.slug  %}">
+					Перейти
+					<i class="bi bi-arrow-right"></i>
+				</a>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+
+	{% else %}
+	<div class="album" style="outline: none;">
+		<div class="container">
+			<div class="row">
+				{% if products %}
+				{% for product in products %}
+				<div class="col-md-4" style="margin: 0 auto;">
+					<div class="card mb-4 box-shadow">
+						<img class="card-img-top" src="{{ product.image.url }}" alt="{{ product.title }}">
+						<div class="card-body">
+							<p class="card-text">
+							<h5 style="text-align: center; margin: 0 0 15px;">{{ product }}</h5>
+							Год выпуска: {{ product.year_of_issue }},
+							Пробег, км: {{ product.mileage }},
+							Двигатель: {{ product.get_engine_display }},
+							Объем двигателя, см3: {{ product.volume }},
+							Мощность, л. с.: {{ product.power }} ...
+							<hr>
+							<h5 style="text-align: center; padding: 0 0 14px;">{{ product.price }} сом</h5>
+							</p>
+							<div class="d-flex justify-content-between align-items-center">
+								<div class="btn-group">
+									<a href="{% url 'cart_add' product.id %}"
+									   class="btn btn-sm btn-outline-secondary">В корзину</a>
+									<a href="{% url 'product-detail' product.id %}"
+									   class="btn btn-sm btn-outline-secondary">Перейти</a>
+								</div>
+								<small class="text-muted">{{ product.created }}</small>
+							</div>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+				{% else %}
+				<h3>Упс... кажется нет публикаций((</h3>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+	{% endif %}
+</section>
+{% endblock %}
+
